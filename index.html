@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>William Parker | Digital Portfolio</title>
+  <title>William Parker | Digital Projects</title>
   <style>
     :root {
       --bg: #f6f3ee;
-      --text: #171717;
-      --muted: #5f5f5f;
+      --ink: #171717;
+      --muted: #64615d;
       --card: #ffffff;
-      --accent: #245c4f;
       --line: #ded8cf;
+      --accent: #245c4f;
+      --accent-dark: #183f37;
     }
 
     * {
@@ -20,283 +21,529 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
+      min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(36, 92, 79, 0.10), transparent 34rem),
+        var(--bg);
+      color: var(--ink);
       line-height: 1.6;
     }
 
     header {
-      max-width: 1100px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(246, 243, 238, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav-wrap {
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 32px 24px;
+      padding: 22px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--line);
+      gap: 20px;
     }
 
     .logo {
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.02em;
     }
 
-    nav a {
-      color: var(--text);
-      text-decoration: none;
-      margin-left: 20px;
-      font-size: 14px;
+    nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    nav a:hover {
+    nav button,
+    .project-tab {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+      border-radius: 999px;
+      padding: 8px 13px;
+      transition: 180ms ease;
+    }
+
+    nav button:hover,
+    nav button.active,
+    .project-tab:hover,
+    .project-tab.active {
+      border-color: var(--line);
+      background: var(--card);
       color: var(--accent);
     }
 
     main {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 64px 24px;
+      padding: 56px 24px 72px;
     }
 
-    .hero {
-      padding: 40px 0 80px;
+    .view {
+      display: none;
+      animation: fadeSlide 420ms ease both;
     }
 
-    .tag {
+    .view.active {
+      display: block;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .eyebrow {
       color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 18px;
-      text-transform: uppercase;
       font-size: 13px;
-      letter-spacing: 0.08em;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
     }
 
     h1 {
-      font-size: clamp(42px, 7vw, 78px);
-      line-height: 0.98;
-      max-width: 850px;
+      max-width: 920px;
+      font-size: clamp(42px, 8vw, 82px);
+      line-height: 0.97;
+      letter-spacing: -0.03em;
       margin-bottom: 24px;
     }
 
-    .hero p {
-      max-width: 680px;
-      color: var(--muted);
-      font-size: 20px;
-    }
-
-    section {
-      padding: 56px 0;
-      border-top: 1px solid var(--line);
-    }
-
     h2 {
-      font-size: 30px;
-      margin-bottom: 22px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
     }
 
-    .about {
+    h3 {
+      font-size: 21px;
+      margin-bottom: 10px;
+    }
+
+    .lead {
       max-width: 760px;
       color: var(--muted);
-      font-size: 18px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 22px;
-    }
-
-    .card h3 {
-      margin-bottom: 10px;
       font-size: 20px;
+      margin-bottom: 30px;
     }
 
-    .card p {
+    .quote {
+      max-width: 760px;
+      margin-top: 38px;
+      padding: 26px;
+      border-left: 5px solid var(--accent);
+      background: rgba(255, 255, 255, 0.58);
+      border-radius: 8px;
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .quote span {
+      display: block;
+      margin-top: 8px;
       color: var(--muted);
       font-size: 15px;
+      font-weight: 400;
     }
 
-    .skills {
+    .panel {
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 30px;
+      margin-top: 28px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .text-block p {
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-size: 17px;
+    }
+
+    .stat-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--accent-dark);
+      margin-bottom: 4px;
+    }
+
+    .project-tabs {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      margin: 26px 0;
     }
 
-    .skills span {
+    .project-detail {
+      display: none;
+      background: var(--card);
       border: 1px solid var(--line);
-      background: #fff;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-    }
-
-    .contact {
-      background: var(--text);
-      color: white;
-      padding: 32px;
       border-radius: 8px;
+      padding: 30px;
+      animation: fadeSlide 360ms ease both;
     }
 
-    .contact p {
-      color: #d7d7d7;
-      margin-bottom: 18px;
+    .project-detail.active {
+      display: block;
     }
 
-    .button {
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .mini-card {
+      border: 1px solid var(--line);
+      background: #fbfaf8;
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .mini-card p,
+    .project-detail p {
+      color: var(--muted);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .link-button {
       display: inline-block;
-      background: var(--accent);
-      color: white;
-      padding: 12px 18px;
-      border-radius: 6px;
       text-decoration: none;
-      font-weight: 700;
+      color: white;
+      background: var(--accent);
+      padding: 11px 14px;
+      border-radius: 6px;
+      font-weight: 800;
+      transition: 180ms ease;
+    }
+
+    .link-button:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    .contact-card {
+      max-width: 760px;
+      background: var(--ink);
+      color: white;
+      border-radius: 8px;
+      padding: 34px;
+    }
+
+    .contact-card p {
+      color: #d8d8d8;
+      margin-bottom: 16px;
+    }
+
+    .contact-row {
+      padding: 14px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .contact-row a {
+      color: white;
+      font-weight: 800;
+      text-decoration: none;
     }
 
     footer {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 32px 24px;
+      padding: 26px 24px;
+      border-top: 1px solid var(--line);
       color: var(--muted);
       font-size: 14px;
     }
 
-    @media (max-width: 800px) {
-      header {
-        align-items: flex-start;
-        gap: 18px;
-        flex-direction: column;
-      }
-
-      nav a {
-        margin-left: 0;
-        margin-right: 14px;
-      }
-
-      .grid {
+    @media (max-width: 820px) {
+      .nav-wrap,
+      .split {
         grid-template-columns: 1fr;
       }
 
-      main {
-        padding-top: 36px;
+      .nav-wrap {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel,
+      .project-detail,
+      .contact-card {
+        padding: 22px;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">William Parker</div>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <div class="nav-wrap">
+      <div class="logo">William Parker</div>
+      <nav aria-label="Main navigation">
+        <button class="nav-button active" data-view="home">Home</button>
+        <button class="nav-button" data-view="about">About</button>
+        <button class="nav-button" data-view="projects">Projects</button>
+        <button class="nav-button" data-view="contact">Contact</button>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="tag">AI · LegalTech · Digital Workflows</div>
-      <h1>Building practical digital systems for law, privacy and creative work.</h1>
-      <p>
-        I am developing a professional body of work around AI tools, legal technology,
-        data privacy, workflow design and creative systems.
+    <section id="home" class="view active">
+      <div class="eyebrow">AI · Law · Data · Digital Projects</div>
+      <h1>Building practical digital systems with purpose, clarity and ambition.</h1>
+      <p class="lead">
+        I am developing a professional body of work across AI, legal technology, data privacy,
+        writing, research and social impact. This site brings together the projects, ideas and
+        interests that shape that direction.
       </p>
-    </section>
-
-    <section id="about">
-      <h2>About</h2>
-      <p class="about">
-        My work focuses on the practical use of AI and digital tools to improve how
-        information is organised, reviewed and acted on. I am especially interested in
-        LegalTech, data protection, DSAR workflows, research systems and the way AI can
-        support clearer, faster and more thoughtful professional work.
-      </p>
-    </section>
-
-    <section id="projects">
-      <h2>Projects</h2>
-      <div class="grid">
-        <article class="card">
-          <h3>DSAR Tracker</h3>
-          <p>
-            A structured tracker for managing data subject access requests, deadlines,
-            statuses, responsible parties and compliance progress.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>DSAR Workflow</h3>
-          <p>
-            A process-focused workflow mapping how a request moves from intake to review,
-            response preparation and final completion.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>AI Workflow Experiments</h3>
-          <p>
-            Practical experiments using AI to support research, document handling,
-            summarisation, planning and professional productivity.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Privacy Research</h3>
-          <p>
-            Research interests around data brokering, consumer privacy, digital rights
-            and the commercial use of personal information.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Creative Systems</h3>
-          <p>
-            Writing and creative development supported by structured notes, worldbuilding,
-            drafting workflows and long-form project organisation.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Digital Portfolio</h3>
-          <p>
-            This site acts as a growing record of projects, interests and practical
-            work across AI, law, privacy and technology.
-          </p>
-        </article>
+      <div class="quote">
+        "It's never too late."
+        <span>A personal reminder that growth, discipline and reinvention remain available at every stage. The oppurtunity for growth resides within us all, all you need is the potnential to unlock it.</span>
       </div>
     </section>
 
-    <section id="skills">
-      <h2>Skills & Interests</h2>
-      <div class="skills">
-        <span>AI Tools</span>
-        <span>LegalTech</span>
-        <span>Data Privacy</span>
-        <span>DSAR Workflows</span>
-        <span>Research</span>
-        <span>Excel / Sheets</span>
-        <span>Workflow Design</span>
-        <span>Process Mapping</span>
-        <span>Creative Technology</span>
+    <section id="about" class="view">
+      <div class="eyebrow">About</div>
+      <h2>Professional work, practical systems and long-term growth.</h2>
+      <div class="split panel">
+        <div class="text-block">
+          <p>
+            My work is centred around digital tools to organise information, improve
+            workflows and make complex tasks clearer. I am particularly interested in AI,
+            LegalTech, data protection, privacy processes and structured project development.
+          </p>
+          <p>
+            I approach projects with a mix of commercial awareness, creative
+            problem-solving and research abilities. My goal is to build a portfolio that showcasess practical thinking rather
+            than just interest.
+          </p>
+          <p>
+            Alongside professional development, I am also interested in writing and creative
+            technology. I see creativity and technical thinking as connected wherein both require structure,
+            judgment and the ability to turn rough ideas into something clear.
+          </p>
+        </div>
+        <div class="stat-list">
+          <div class="stat">
+            <strong>Focus</strong>
+            AI, LegalTech, data privacy and workflow design.
+          </div>
+          <div class="stat">
+            <strong>Approach</strong>
+            Practical, organised, research-led and outcome-focused.
+          </div>
+          <div class="stat">
+            <strong>Goal</strong>
+            To build useful digital systems and develop a career around technology, law and innovation.
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="contact">
-      <div class="contact">
-        <h2>Contact</h2>
+    <section id="projects" class="view">
+      <div class="eyebrow">Projects</div>
+      <h2>Selected project areas.</h2>
+      <p class="lead">
+        Choose a project area below to view a focused summary, example work and future development ideas.
+      </p>
+
+      <div class="project-tabs" aria-label="Project categories">
+        <button class="project-tab active" data-project="data">Data</button>
+        <button class="project-tab" data-project="law">Law</button>
+        <button class="project-tab" data-project="writing">Writing</button>
+        <button class="project-tab" data-project="astrology">Astrophysics</button>
+        <button class="project-tab" data-project="charity">Charity</button>
+      </div>
+
+      <article id="data" class="project-detail active">
+        <h3>Data</h3>
         <p>
-          Open to conversations around AI, LegalTech, privacy, digital workflows and
-          project collaboration.
+          Projects focused on data organisation, privacy workflows, structured tracking and
+          practical information management.
         </p>
-        <a class="button" href="mailto: williamparker360@gmail.com">Email Me</a>
+        <div class="project-grid">
+          <div class="mini-card">
+            <h3>DSAR Tracker</h3>
+            <p>A structured tracker for request deadlines, statuses, ownership and compliance progress.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Privacy Research</h3>
+            <p>Research into data brokering, consumer privacy and the commercial use of personal data.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Data Workflows</h3>
+            <p>Systems for turning scattered information into clear, reviewable processes.</p>
+          </div>
+        </div>
+        <div class="links">
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Project Link</a>
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Document</a>
+        </div>
+      </article>
+
+      <article id="law" class="project-detail">
+        <h3>Law</h3>
+        <p>
+          Work exploring legal technology, AI governance, compliance workflows and the role of
+          automation in legal and professional services.
+        </p>
+        <div class="project-grid">
+          <div class="mini-card">
+            <h3>LegalTech Workflows</h3>
+            <p>Mapping how tools can support document review, intake, tracking and response preparation.</p>
+          </div>
+          <div class="mini-card">
+            <h3>AI Governance</h3>
+            <p>Interest in responsible AI use, risk, oversight and professional accountability.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Compliance Systems</h3>
+            <p>Practical systems for making legal obligations easier to monitor and act on.</p>
+          </div>
+        </div>
+        <div class="links">
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Case Study</a>
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Research</a>
+        </div>
+      </article>
+
+      <article id="writing" class="project-detail">
+        <h3>Writing</h3>
+        <p>
+          Creative and analytical writing projects, including long-form fiction, short film concepts,
+          worldbuilding and structured drafting systems.
+        </p>
+        <div class="project-grid">
+          <div class="mini-card">
+            <h3>Novel Development</h3>
+            <p>A long-form fiction project built through planning, drafting and editing.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Creative Systems</h3>
+            <p>Using structured notes and workflows to manage large creative projects.</p>
+          </div>
+        </div>
+        <div class="links">
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Writing Sample</a>
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Project Notes</a>
+        </div>
+      </article>
+
+      <article id="astrophysics" class="project-detail">
+        <h3>Astrophysics</h3>
+        <p>
+          A cultural and symbolic research interest exploring belief systems, interpretation,
+          identity, language and the ways people use patterns to understand themselves.
+        </p>
+        <div class="project-grid">
+          <div class="mini-card">
+            <h3>Astronomy</h3>
+            <p>Looking at huamnity's biggest questions: How the Universe works, where we came from, and what lies in the unknown? </p>
+          </div>
+        </div>
+        <div class="links">
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Essay</a>
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Notes</a>
+        </div>
+      </article>
+
+      <article id="charity" class="project-detail">
+        <h3>Charity</h3>
+        <p>
+          A developing area for social impact, volunteering, fundraising ideas and projects designed
+          to support causes with practical digital organisation.
+        </p>
+        <div class="project-grid">
+          <div class="mini-card">
+            <h3>Social Impact</h3>
+            <p>Using practical skills to support causes, communities and meaningful initiatives.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Fundraising Ideas</h3>
+            <p>A future space for campaigns, events, planning and measurable outcomes.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Digital Support</h3>
+            <p>Applying workflow, research and organisation skills to charitable projects.</p>
+          </div>
+        </div>
+        <div class="links">
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Initiative</a>
+          <a class="link-button" href="#" target="_blank" rel="noopener">Add Evidence</a>
+        </div>
+      </article>
+    </section>
+
+    <section id="contact" class="view">
+      <div class="eyebrow">Contact</div>
+      <h2>Get in touch.</h2>
+      <div class="contact-card">
+        <p>
+          For conversations around AI, LegalTech, data, writing, projects or collaboration,
+          the best ways to reach me are below.
+        </p>
+        <div class="contact-row">
+          Email: <a href="mailto:your-email@example.com">williamparker360@gmail.com</a>
+        </div>
+        <div class="contact-row">
+          Phone: <a href="tel:+440000000000">+44 7309 572538</a>
+        </div>
+        <div class="contact-row">
+          LinkedIn: <a href="#" target="_blank" rel="noopener">https://www.linkedin.com/in/william-parker-a2808b248/</a>
+        </div>
+        <div class="contact-row">
+          GitHub: <a href="https://github.com/willrparker" target="_blank" rel="noopener">github.com/willrparker</a>
+        </div>
       </div>
     </section>
   </main>
@@ -304,5 +551,46 @@
   <footer>
     © 2026 William Parker. Built with GitHub Pages.
   </footer>
+
+  <script>
+    const navButtons = document.querySelectorAll(".nav-button");
+    const views = document.querySelectorAll(".view");
+    const projectTabs = document.querySelectorAll(".project-tab");
+    const projectDetails = document.querySelectorAll(".project-detail");
+
+    function showView(viewId) {
+      views.forEach((view) => {
+        view.classList.toggle("active", view.id === viewId);
+      });
+
+      navButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.view === viewId);
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showProject(projectId) {
+      projectDetails.forEach((detail) => {
+        detail.classList.toggle("active", detail.id === projectId);
+      });
+
+      projectTabs.forEach((tab) => {
+        tab.classList.toggle("active", tab.dataset.project === projectId);
+      });
+    }
+
+    navButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        showView(button.dataset.view);
+      });
+    });
+
+    projectTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        showProject(tab.dataset.project);
+      });
+    });
+  </script>
 </body>
 </html>
